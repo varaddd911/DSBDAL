@@ -1,0 +1,32 @@
+Data Visualization I  
+1. Use the inbuilt dataset 'titanic'. The dataset contains 891 rows and contains information 
+about the passengers who boarded the unfortunate Titanic ship. Use the Seaborn library to 
+see if we can find any patterns in the data.  
+2. Write a code to check how the price of the ticket (column name: 'fare') for each passenger 
+is distributed by plotting a histogram. 
+
+
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+df = pd.read_csv('titanic.csv')
+df.head()
+plt.hist(x = df['Fare'], bins = 20)
+
+----------------------------------------------------------------------(BELOW THIS IS OPTIONAL IF POSSIBLE USE 2-3 GRAPHS)
+sns.displot(df['Age'], bins = 10)
+sns.scatterplot(df['Age'])
+sns.jointplot(x = df['Age'], y = df['Fare'], kind = 'hex')
+sns.barplot(x = 'Sex', y = 'Age', data = df)
+sns.countplot(x = 'Sex', data = df)
+sns.boxplot(x = 'Sex', y = 'Age', data = df)
+sns.stripplot(x = 'Sex', y = 'Age', data = df, jitter=True)
+
+-------------------------------------------------------------------------------------------------------
+corr = df.corr(numeric_only=True)
+sns.heatmap(corr,annot=True,cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()

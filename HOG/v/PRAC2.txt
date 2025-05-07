@@ -1,0 +1,53 @@
+Data Wrangling II 
+Create an “Academic performance” dataset of students and perform the following 
+operations using Python.  
+1. Scan all variables for missing values and inconsistencies. If there are missing values 
+and/or inconsistencies, use any of the suitable techniques to deal with them.  
+2. Scan all numeric variables for outliers. If there are outliers, use any of the suitable 
+techniques to deal with them.  
+3. Apply data transformations on at least one of the variables. The purpose of this 
+transformation should be one of the following reasons: to change the scale for better 
+understanding of the variable, to convert a non-linear relation into a linear one, or to 
+decrease the skewness and convert the distribution into a normal distribution.  
+Reason and document your approach properly.  
+
+
+
+import pandas as pd
+import numpy as np
+
+--------------------------------------
+data = {
+    'Student_ID': range(1, 11),
+    'Marks': [85, 78, np.nan, 92, 88, 69, 95, np.nan, 80, 89],
+    'Attendance': [95, 88, 90, np.nan, 85, 80, 92, 78, np.nan, 87],
+    'Study_Hours': [5, 4, 6, 7, 5, np.nan, 8, 4, 6, 5],
+    'Extracurricular': ['Yes', 'No', 'Yes', np.nan, 'No', 'Yes', 'No', 'Yes', np.nan, 'No']
+}
+
+df = pd.DataFrame(data)
+df.head()
+----------------------------------------------
+
+
+df.isna()
+
+----------------------
+df['Marks'].fillna(df['Marks'].mean(), inplace=True)
+df['Attendance'].fillna(df['Attendance'].mode(), inplace=True)
+df['Study_Hours'].fillna(df['Study_Hours'].median(), inplace=True)
+
+--------------------------------------------------------
+Q1 = df['Marks'].quantile(0.25)
+Q3 = df['Marks'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+lower_bound,upper_bound
+
+-----------------------------------------------------------
+r_outlier = []
+for i in df['Marks']:
+  if i < lower_bound or i > upper_bound:
+      r_outlier.append(i)
+      print(r_outlier)

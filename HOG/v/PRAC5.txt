@@ -1,0 +1,51 @@
+Data Analytics II  
+1. Implement logistic regression using Python/R to perform classification on 
+Social_Network_Ads.csv dataset.  
+2. Compute Confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, Precision, 
+Recall on the given dataset.  
+
+
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression  
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+
+---------------------------------------------------------------------------------------------
+df = pd.read_csv('Social_Network_Ads.csv')
+df
+
+---------------------------------------------------------------------------------------------
+Features = df.drop(['User ID', 'Purchased', 'Gender'], axis=1)
+Target = df['Purchased']
+
+------------------------------------------------------------------------------------------------------
+x_train, x_test, y_train, y_test = train_test_split(Features, Target, test_size=0.25)
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+----------------------------------------------------------------------------------------------------------
+LR = LogisticRegression(random_state=0)
+LR.fit(x_train, y_train)
+
+---------------------------------------------------------------------------------------------------------
+y_train_pred = LR.predict(x_train)
+y_test_pred = LR.predict(x_test)
+----------------------------------------------------------------------------------------------------------
+score = accuracy_score(y_test, y_test_pred)
+score*100
+-----------------------------------------------------------------------------------------------------------
+matrix = confusion_matrix(y_test, y_test_pred)
+matrix
+-----------------------------------------------------------------------------------------------------------
+print('True Positive:', matrix[0][0])
+print('True Negative:', matrix[1][1])
+print('False Positive:', matrix[0][1])
+print('False Negative:', matrix[1][0])
+print('Accuracy:', score)
+precision = matrix[0][0]/(matrix[0][0]+matrix[0][1])
+print('Precision:', precision)
